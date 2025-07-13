@@ -51,6 +51,8 @@ class Navbar {
             targetPath = '../../index.html';
         } else if (currentPath.includes('/fahrtenarchiv/')) {
             targetPath = '../../index.html';
+        } else if (currentPath.includes('/finanzen/')) {
+            targetPath = '../../index.html';
         } else if (currentPath.includes('/werkzeuge/')) {
             targetPath = '../../index.html';
         } else if (currentPath.includes('/einstellungen/')) {
