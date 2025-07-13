@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fahrzeuge Management - Fahrly</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../styles/reset.css">
+    <link rel="stylesheet" href="../styles/variables.css">
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/typography.css">
+    <link rel="stylesheet" href="../styles/layout.css">
+    <link rel="stylesheet" href="../styles/utilities.css">
+    <link rel="stylesheet" href="../styles/components/navbar.css">
+    <link rel="stylesheet" href="../styles/components/sidebar.css">
+    <link rel="stylesheet" href="../styles/components/buttons.css">
+    <link rel="stylesheet" href="../styles/components/forms.css">
+    <link rel="stylesheet" href="../styles/components/tables.css">
+    <link rel="stylesheet" href="../styles/components/cards.css">
+    <link rel="stylesheet" href="../styles/components/alerts.css">
+    <link rel="stylesheet" href="../styles/pages/fahrzeuge.css">
+ 
+</head>
+<body>
+    <!-- Include Navbar Component -->
+    <div id="navbar-container"></div>
+    
+    <!-- Sidebar Component (dynamically loaded) -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Fahrzeuge Management</h1>
+                <p class="page-subtitle">Verwalten Sie Ihre Fahrzeuge und deren Daten</p>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">18</div>
+                    <div class="stat-label">Aktive Fahrzeuge</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">In Wartung</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Verfügbar</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Neue Fahrzeuge</div>
+                </div>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="action-bar">
+                <div class="search-box">
+                    <input type="text" id="searchVehicles" placeholder="Fahrzeuge suchen...">
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="filterBtn">Filter</button>
+                    <button class="btn btn-primary" id="addVehicleBtn">Neues Fahrzeug hinzufügen</button>
+                </div>
+            </div>
+
+            <!-- Vehicles Table -->
+            <div class="vehicles-table">
+                <div class="table-header">
+                    <h3 class="table-title">Fahrzeuge Übersicht</h3>
+                </div>
+                <div class="table-container">
+                    <table id="vehiclesTable">
+                        <thead>
+                            <tr>
+                                <th>Kennzeichen</th>
+                                <th>Marke & Modell</th>
+                                <th>Typ</th>
+                                <th>Status</th>
+                                <th>Fahrer</th>
+                                <th>Nächste Wartung</th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vehiclesTableBody">
+                            <!-- Vehicle rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Vehicle Modal -->
+    <div class="modal" id="vehicleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Neues Fahrzeug hinzufügen</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <form id="vehicleForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Kennzeichen</label>
+                        <input type="text" class="form-input" id="licensePlate" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Marke</label>
+                        <input type="text" class="form-input" id="brand" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Modell</label>
+                        <input type="text" class="form-input" id="model" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Baujahr</label>
+                        <input type="number" class="form-input" id="year" min="1900" max="2030" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Fahrzeugtyp</label>
+                        <select class="form-input" id="vehicleType" required>
+                            <option value="">Typ wählen</option>
+                            <option value="Pkw">Pkw</option>
+                            <option value="Lkw">Lkw</option>
+                            <option value="Transporter">Transporter</option>
+                            <option value="Bus">Bus</option>
+                            <option value="Motorrad">Motorrad</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select class="form-input" id="status" required>
+                            <option value="">Status wählen</option>
+                            <option value="Aktiv">Aktiv</option>
+                            <option value="Wartung">Wartung</option>
+                            <option value="Verfügbar">Verfügbar</option>
+                            <option value="Inaktiv">Inaktiv</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Fahrer (optional)</label>
+                        <select class="form-input" id="assignedDriver">
+                            <option value="">Kein Fahrer zugewiesen</option>
+                            <option value="Max Mustermann">Max Mustermann</option>
+                            <option value="Anna Schmidt">Anna Schmidt</option>
+                            <option value="Tom Weber">Tom Weber</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nächste Wartung</label>
+                        <input type="date" class="form-input" id="nextMaintenance">
+                    </div>
+                </div>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label class="form-label">Kilometerstand</label>
+                        <input type="number" class="form-input" id="mileage" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kraftstofftyp</label>
+                        <select class="form-input" id="fuelType">
+                            <option value="">Kraftstoff wählen</option>
+                            <option value="Benzin">Benzin</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Elektro">Elektro</option>
+                            <option value="Hybrid">Hybrid</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Farbe</label>
+                        <input type="text" class="form-input" id="color">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notizen</label>
+                    <textarea class="form-input" id="notes" rows="3" placeholder="Zusätzliche Informationen..."></textarea>
+                </div>
+                <div class="action-buttons" style="justify-content: flex-end; margin-top: 2rem;">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Abbrechen</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn">Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Load Navbar HTML -->
+    <script>
+        // Load navbar HTML
+        fetch('../components/navbar/navbar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('navbar-container').innerHTML = html;
+                
+                // Initialize navbar after HTML is loaded
+                if (window.Navbar) {
+                    window.navbar = new window.Navbar();
+                } else {
+                    // If Navbar class is not available yet, wait for it
+                    const checkNavbar = setInterval(() => {
+                        if (window.Navbar) {
+                            window.navbar = new window.Navbar();
+                            clearInterval(checkNavbar);
+                        }
+                    }, 100);
+                }
+            })
+            .catch(error => {
+                console.error('Error loading navbar:', error);
+            });
+    </script>
+    
+    <!-- Load Navbar JS -->
+    <script src="../components/navbar/navbar.js"></script>
+    
+    <!-- Load Sidebar HTML -->
+    <script>
+        // Load sidebar HTML
+        fetch('../components/sidebar/sidebar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+                // Initialize sidebar after HTML is loaded
+                if (window.Sidebar) {
+                    window.sidebar = new window.Sidebar();
+                } else {
+                    const checkSidebar = setInterval(() => {
+                        if (window.Sidebar) {
+                            window.sidebar = new window.Sidebar();
+                            clearInterval(checkSidebar);
+                        }
+                    }, 100);
+                }
+            })
+            .catch(error => {
+                console.error('Error loading sidebar:', error);
+            });
+    </script>
+    <!-- Load Sidebar JS -->
+    <script src="../components/sidebar/sidebar.js"></script>
+    <script src="fahrzeuge.js"></script>
+</body>
+</html> 
